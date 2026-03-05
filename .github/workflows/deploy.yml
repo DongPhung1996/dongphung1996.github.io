@@ -11,23 +11,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # XÓA DÒNG cache: 'pnpm' Ở ĐÂY ĐỂ TRÁNH LỖI "packages field missing"
-          
+          cache: 'npm' # Sử dụng cache của npm
+
       - name: Install dependencies
-        # Thêm --no-frozen-lockfile để pnpm tự tạo lại lockfile nếu cần
-        run: pnpm install --no-frozen-lockfile
+        # Dùng npm install thay vì pnpm
+        run: npm install
 
       - name: Generate Static Site
-        run: pnpm run generate
+        # Chạy lệnh build tĩnh của Nuxt
+        run: npx nuxt generate
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
