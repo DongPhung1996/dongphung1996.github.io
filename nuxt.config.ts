@@ -23,7 +23,7 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           name: 'description',
-          content: 'Học tiếng Anh qua EnglishPod với đầy đủ audio, transcript và từ vựng bài bản. Cải thiện kỹ năng nghe nói tự nhiên nhất.' 
+          content: 'Học tiếng Anh qua EnglishPod với đầy đủ audio, transcript và từ vựng bài bản. Cải thiện kỹ năng nghe nói tự nhiên nhất.', 
         },
         { property: 'og:title', content: 'EnglishPod - Học Tiếng Anh Giao Tiếp' },
         { property: 'og:description', content: 'Kho tàng bài học tiếng Anh giao tiếp thú vị, giúp bạn nghe hiểu người bản xứ dễ dàng.' },

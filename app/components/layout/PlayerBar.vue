@@ -79,7 +79,6 @@
 </template>
 
 <script setup>
-// Import store và composable
 const lessonStore = useLessonStore()
 const { isPlaying, currentTime, duration, playbackRate, togglePlay, seek, formatTime, audio } = useAudio()
 

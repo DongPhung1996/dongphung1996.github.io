@@ -12,6 +12,16 @@ export interface TranscriptLine {
   text: string
 }
 
+export interface Language {
+  vi: string
+  en: string
+}
+
+export interface Sentences {
+  category: string
+  list: Language[]
+}
+
 export interface Lesson {
   id: number
   title: string
@@ -19,7 +29,7 @@ export interface Lesson {
   audioUrl: string
   transcript: TranscriptLine[]
   vocabulary: Vocabulary[]
-  sample_essay: string
+  sample_sentences: Sentences[]
 }
 
 interface LessonState {

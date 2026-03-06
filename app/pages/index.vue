@@ -22,7 +22,7 @@
 
     <div class="flex gap-2 p-1 bg-slate-900/50 rounded-xl w-fit mb-8 border border-white/5">
       <button 
-        v-for="tab in ['Transcript', 'Vocabulary', 'Sample Essay']" 
+        v-for="tab in ['Transcript', 'Vocabulary', 'Sample Sentences', 'Exercises']"
         :key="tab"
         @click="activeTab = tab"
         :class="[
@@ -47,22 +47,26 @@
         >
           <div class="flex items-center gap-2 mb-2">
             <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-            <span class="text-blue-400 font-black text-lg">{{ item.word }}</span>
+            <span class="text-blue-400 font-black text-lg">{{ item.word }} - <span class="text-blue-300">{{ item.ipa }}</span></span>
           </div>
           <p class="text-slate-300 text-sm font-medium leading-relaxed">{{ item.meaning }}</p>
           <div class="mt-4 p-3 bg-black/20 rounded-lg">
-            <p class="text-xs text-slate-500 italic">"{{ item.example }}"</p>
+            <p class="text-xs text-slate-400 italic">"{{ item.example }}"</p>
           </div>
         </div>
       </div>
 
-      <div v-if="activeTab === 'Sample Essay'" class="bg-[#16181d] p-8 rounded-3xl border border-white/5 relative overflow-hidden">
+      <div v-if="activeTab === 'Sample Sentences'" class="bg-[#16181d] p-8 rounded-3xl border border-white/5 relative overflow-hidden">
         <div class="absolute top-0 right-0 p-4 opacity-10">
           <Icon name="lucide:quote" size="80" />
         </div>
         <p class="text-slate-300 leading-loose text-lg font-serif italic relative z-10">
-          {{ lessonStore.activeLesson.sample_essay }}
+          <LayoutSampleSentences :data="lessonStore.activeLesson.sample_sentences" />
         </p>
+      </div>
+
+      <div v-if="activeTab === 'Exercises'" class="bg-[#10172a] p-8 rounded-3xl border border-white/5 relative overflow-hidden">
+          <LayoutExercise :key="Date.now()" :data="lessonStore.activeLesson.exercises" />
       </div>
     </div>
   </div>
