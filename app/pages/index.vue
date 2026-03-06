@@ -24,10 +24,10 @@
       <button 
         v-for="tab in ['Transcript', 'Vocabulary', 'Sample Sentences', 'Exercises']"
         :key="tab"
-        @click="activeTab = tab"
+        @click="setTab(tab)"
         :class="[
           'px-6 py-2 rounded-lg text-sm font-bold transition-all',
-          activeTab === tab ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'
+          lessonStore.activeTab === tab ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'
         ]"
       >
         {{ tab }}
@@ -35,11 +35,11 @@
     </div>
 
     <div class="transition-all duration-300">
-      <div v-if="activeTab === 'Transcript'">
+      <div v-if="lessonStore.activeTab === 'Transcript'">
         <LessonTranscript :lesson="lessonStore.activeLesson" />
       </div>
 
-      <div v-if="activeTab === 'Vocabulary'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div v-if="lessonStore.activeTab === 'Vocabulary'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div 
           v-for="item in lessonStore.activeLesson.vocabulary" 
           :key="item.word"
@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <div v-if="activeTab === 'Sample Sentences'" class="bg-[#16181d] p-8 rounded-3xl border border-white/5 relative overflow-hidden">
+      <div v-if="lessonStore.activeTab === 'Sample Sentences'" class="bg-[#16181d] p-8 rounded-3xl border border-white/5 relative overflow-hidden">
         <div class="absolute top-0 right-0 p-4 opacity-10">
           <Icon name="lucide:quote" size="80" />
         </div>
@@ -65,7 +65,7 @@
         </p>
       </div>
 
-      <div v-if="activeTab === 'Exercises'" class="bg-[#10172a] p-8 rounded-3xl border border-white/5 relative overflow-hidden">
+      <div v-if="lessonStore.activeTab === 'Exercises'" class="bg-[#10172a] p-8 rounded-3xl border border-white/5 relative overflow-hidden">
           <LayoutExercise :key="Date.now()" :data="lessonStore.activeLesson.exercises" />
       </div>
     </div>
@@ -74,5 +74,8 @@
 
 <script setup lang="ts">
 const lessonStore = useLessonStore()
-const activeTab = ref('Transcript')
+// const activeTab = ref('Transcript')
+const setTab = (tab) => {
+  lessonStore.setActiveTab(tab)
+}
 </script>

@@ -58,11 +58,11 @@
             <input 
               v-if="pIdx < ex.sentence.split('________').length - 1"
               v-model="userAnswers[ex.id]"
-              @keyup.enter="checkAnswer(ex)"
+              @keyup.enter.prevent="checkAnswer(ex)"
               type="text"
+              :disabled="isCompleted(ex) || lives <= 0"
               class="min-w-[140px] px-3 py-1 bg-[#0f172a] border-b-2 outline-none transition-all text-center font-bold"
               :class="getInputClass(ex)"
-              :disabled="isCompleted(ex)"
               placeholder="....."
             />
           </template>
@@ -129,49 +129,66 @@ const startNewGame = () => {
   lives.value = 3
   completedIds.value.clear()
   showHint.value = {}
+  wrongAnswers.value.clear()
 }
 const correctCount = computed(() => completedIds.value.size)
+// Thêm vào script setup
+const processingId = ref(null)
+const wrongAnswers = ref(new Set()) // <--- THÊM DÒNG NÀY
 
 const checkAnswer = (ex) => {
-  if (completedIds.value.has(ex.id)) return
+  if (completedIds.value.has(ex.id) || processingId.value === ex.id || lives.value <= 0) return
 
   const userAns = userAnswers.value[ex.id]?.toLowerCase().trim()
+  if (!userAns) return
+
+  processingId.value = ex.id
+
   if (userAns === ex.hiddenWord.toLowerCase()) {
     completedIds.value.add(ex.id)
-  
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#60a5fa', '#4ade80', '#fbbf24']
-    })
+    wrongAnswers.value.delete(ex.id) // Nếu sửa lại cho đúng thì xóa trạng thái sai đi
+    
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } })
+    
     if (completedIds.value.size === shuffledExercises.value.length) {
-      const duration = 5 * 1000
-      const animationEnd = Date.now() + duration
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
-
-      const interval = setInterval(function() {
-        const timeLeft = animationEnd - Date.now()
-        if (timeLeft <= 0) return clearInterval(interval)
-        const particleCount = 50 * (timeLeft / duration)
-        confetti({ ...defaults, particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } })
-      }, 250)
+      saveResult()
     }
   } else {
     lives.value--
+    wrongAnswers.value.add(ex.id) // <--- ĐÁNH DẤU CÂU NÀY BỊ SAI
+    
+    if (lives.value === 0) {
+      saveResult()
+    }
   }
-};
+
+  setTimeout(() => {
+    processingId.value = null
+  }, 300)
+}
 
 const isCompleted = (ex) => completedIds.value.has(ex.id)
 
 const getInputClass = (ex) => {
-  if (isCompleted(ex)) return 'border-green-500 text-green-400 bg-green-950/20'
-  const val = userAnswers.value[ex.id]
-  if (val && val.length >= ex.hiddenWord.length && val.toLowerCase().trim() !== ex.hiddenWord.toLowerCase()) {
+  if (completedIds.value.has(ex.id)) {
+    return 'border-green-500 text-green-400 bg-green-950/20'
+  }
+  if (wrongAnswers.value.has(ex.id)) {
     return 'border-red-500 text-red-400 bg-red-950/20 animate-shake'
   }
   return 'border-slate-600 text-blue-400 focus:border-blue-500'
 }
-
 onMounted(startNewGame)
 </script>
+
+<style scoped>
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shake 0.2s ease-in-out 0s 2;
+}
+</style>

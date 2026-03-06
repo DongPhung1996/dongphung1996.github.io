@@ -33,6 +33,7 @@ export interface Lesson {
 }
 
 interface LessonState {
+  activeTab: string
   lessons: Lesson[]
   currentLessonId: number | null
   favorites: number[] // Lưu danh sách ID các bài học được đánh sao
@@ -43,6 +44,7 @@ interface LessonState {
 // 2. Khởi tạo Store
 export const useLessonStore = defineStore('lessonStore', {
   state: (): LessonState => ({
+    activeTab: 'Transcript',
     lessons: [],
     currentLessonId: null,
     favorites: [],
@@ -101,6 +103,11 @@ export const useLessonStore = defineStore('lessonStore', {
       } finally {
         this.isLoading = false
       }
+    },
+
+  // Hàm để đổi tab từ bất cứ đâu
+    setActiveTab(tabName: string): void {
+      this.activeTab = tabName
     },
 
     // Chọn bài học mới
