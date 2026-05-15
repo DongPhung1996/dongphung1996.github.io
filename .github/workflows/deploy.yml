@@ -1,44 +1,51 @@
-name: Deploy to GitHub Pages
+name: Deploy Nuxt 4 to S3
 
 on:
   push:
-    branches: [main]
+    branches:
+      - develop
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm' # Sử dụng cache của npm
+          node-version: 25
+          cache: 'npm'
 
       - name: Install dependencies
-        # Dùng npm install thay vì pnpm
-        run: npm install
+        run: npm ci
 
       - name: Generate Static Site
-        # Chạy lệnh build tĩnh của Nuxt
-        run: npx nuxt generate
+        run: npm run generate
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          path: .output/public
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1 
 
-  deploy:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # Deploy lên dev khi push vào nhánh develop
+      - name: Deploy to Staging S3
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          aws s3 sync .output/public s3://npc-corporate-dev --delete
+
+      # Invalidate CloudFront Cache
+      - name: CloudFront Invalidation
+        if: success()
+        run: |
+          # Logic chọn ID Distribution dựa trên branch
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            DIST_ID=${{ secrets.CLOUDFRONT_PROD_ID }}
+          else
+            DIST_ID=${{ secrets.CLOUDFRONT_STG_ID }}
+          fi
+          aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"
