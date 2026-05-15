@@ -4,7 +4,7 @@ import { ref, onMounted, watch } from 'vue'
 export const useAudio = () => {
   // Đối tượng audio duy nhất cho toàn ứng dụng
   const audio = ref<HTMLAudioElement | null>(null)
-  
+
   // Các trạng thái reactive để UI nhận biết
   const isPlaying = useState('audio_isPlaying', () => false)
   const currentTime = useState('audio_currentTime', () => 0)
@@ -34,13 +34,13 @@ export const useAudio = () => {
   // Hàm phát nhạc
   const play = (url: string) => {
     if (!audio.value) return
-    
+
     // Nếu đổi bài mới thì load lại src
     if (audio.value.src !== window.location.origin + url) {
       audio.value.src = url
       audio.value.load()
     }
-    
+
     audio.value.play()
     isPlaying.value = true
   }

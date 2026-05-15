@@ -51,11 +51,12 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-01-15',
   nitro: {
-    static: true
+    static: true,
+    nitro: {
+    preserveCompileVars: true
   },
-  experimental: {
-    payloadExtraction: false
   },
+
   postcss: {
     plugins: {
       '@tailwindcss/postcss': {}

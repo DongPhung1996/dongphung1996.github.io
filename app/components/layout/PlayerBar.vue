@@ -1,14 +1,14 @@
 <template>
   <div class="bg-[#0f1115] pt-4 pb-6 px-10 border-t border-white/5">
-    <div 
-      class="relative w-full h-1 bg-slate-800 rounded-full mb-6 group cursor-pointer" 
+    <div
+      class="relative w-full h-1 bg-slate-800 rounded-full mb-6 group cursor-pointer"
       @mousedown="handleProgressClick"
     >
-      <div 
+      <div
         class="absolute top-0 left-0 h-full bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full transition-[width] duration-150"
         :style="{ width: `${progressPercent}%` }"
       ></div>
-      <div 
+      <div
         class="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
         :style="{ left: `${progressPercent}%` }"
       ></div>
@@ -20,42 +20,60 @@
       </div>
 
       <div class="flex items-center gap-8">
-        <button @click="skip(-10)" class="text-slate-400 hover:text-white transition">
+        <button class="text-slate-400 hover:text-white transition" @click="skip(-10)">
           <Icon name="lucide:rewind" size="24" />
         </button>
-        
-        <button @click="prevLesson" class="text-slate-400 hover:text-white transition">
+
+        <button class="text-slate-400 hover:text-white transition" @click="prevLesson">
           <Icon name="lucide:skip-back" size="24" fill="currentColor" />
         </button>
-        
-        <button 
-          @click="handleToggle"
+
+        <button
           class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-white/10 shadow-xl hover:scale-105 transition active:scale-95"
+          @click="handleToggle"
         >
-          <Icon :name="isPlaying ? 'lucide:pause' : 'lucide:play'" class="text-black" size="28" fill="black" />
+          <Icon
+            :name="isPlaying ? 'lucide:pause' : 'lucide:play'"
+            class="text-black"
+            size="28"
+            fill="black"
+          />
         </button>
 
-        <button @click="nextLesson" class="text-slate-400 hover:text-white transition">
+        <button class="text-slate-400 hover:text-white transition" @click="nextLesson">
           <Icon name="lucide:skip-forward" size="24" fill="currentColor" />
         </button>
 
-        <button @click="skip(10)" class="text-slate-400 hover:text-white transition">
+        <button class="text-slate-400 hover:text-white transition" @click="skip(10)">
           <Icon name="lucide:fast-forward" size="24" />
         </button>
       </div>
 
       <div class="flex items-center gap-6 w-48 justify-end">
-        <button class="text-slate-500 hover:text-blue-400 transition"><Icon name="lucide:repeat" size="20" /></button>
-        <button class="text-slate-500 hover:text-blue-400 transition"><Icon name="lucide:log-in" size="20" /></button>
-        
-        <button 
-          @click="toggleSpeed" 
+        <button class="text-slate-500 hover:text-blue-400 transition">
+          <Icon name="lucide:repeat" size="20" />
+        </button>
+        <button class="text-slate-500 hover:text-blue-400 transition">
+          <Icon name="lucide:log-in" size="20" />
+        </button>
+
+        <button
           class="px-2 py-0.5 border border-slate-700 rounded text-xs font-bold text-slate-400 hover:text-white hover:border-slate-500 transition min-w-[35px]"
+          @click="toggleSpeed"
         >
           {{ playbackRate }}x
         </button>
-        <button @click="toggleMute" class="text-slate-400 hover:text-white transition">
-            <Icon :name="isMuted || volume === 0 ? 'lucide:volume-x' : volume < 0.5 ? 'lucide:volume-1' : 'lucide:volume-2'" size="22" />
+        <button class="text-slate-400 hover:text-white transition" @click="toggleMute">
+          <Icon
+            :name="
+              isMuted || volume === 0
+                ? 'lucide:volume-x'
+                : volume < 0.5
+                  ? 'lucide:volume-1'
+                  : 'lucide:volume-2'
+            "
+            size="22"
+          />
         </button>
       </div>
     </div>
@@ -80,7 +98,8 @@
 
 <script setup>
 const lessonStore = useLessonStore()
-const { isPlaying, currentTime, duration, playbackRate, togglePlay, seek, formatTime, audio } = useAudio()
+const { isPlaying, currentTime, duration, playbackRate, togglePlay, seek, formatTime, audio } =
+  useAudio()
 
 const volume = ref(1) // 1 là 100%
 const isMuted = ref(false)
@@ -138,7 +157,7 @@ const toggleSpeed = () => {
   const currentIndex = speeds.indexOf(playbackRate.value)
   const nextIndex = (currentIndex + 1) % speeds.length
   const newSpeed = speeds[nextIndex]
-  
+
   playbackRate.value = newSpeed
   if (audio.value) {
     audio.value.playbackRate = newSpeed

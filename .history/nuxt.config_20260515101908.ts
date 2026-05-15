@@ -53,7 +53,7 @@ export default defineNuxtConfig({
   nitro: {
     static: true
   },
-  experimental: {
+experimental: {
     payloadExtraction: false
   },
   postcss: {

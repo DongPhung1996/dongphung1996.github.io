@@ -8,16 +8,16 @@
       <div class="flex-1 overflow-y-auto">
         <slot />
       </div>
-    <Transition
-      enter-active-class="transform transition duration-300 ease-out"
-      enter-from-class="translate-y-full opacity-0"
-      enter-to-class="translate-y-0 opacity-100"
-      leave-active-class="transform transition duration-200 ease-in"
-      leave-from-class="translate-y-0 opacity-100"
-      leave-to-class="translate-y-full opacity-0"
-    >
-      <LayoutPlayerBar v-if="lessonStore.activeTab === 'Transcript'" />
-    </Transition>
+      <Transition
+        enter-active-class="transform transition duration-300 ease-out"
+        enter-from-class="translate-y-full opacity-0"
+        enter-to-class="translate-y-0 opacity-100"
+        leave-active-class="transform transition duration-200 ease-in"
+        leave-from-class="translate-y-0 opacity-100"
+        leave-to-class="translate-y-full opacity-0"
+      >
+        <LayoutPlayerBar v-if="lessonStore.activeTab === 'Transcript'" />
+      </Transition>
     </main>
   </div>
 </template>

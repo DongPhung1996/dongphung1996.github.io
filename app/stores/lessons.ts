@@ -36,9 +36,10 @@ interface LessonState {
   activeTab: string
   lessons: Lesson[]
   currentLessonId: number | null
-  favorites: number[] // Lưu danh sách ID các bài học được đánh sao
+  favorites: number[]
   lastPlayedId: number | null
   isLoading: boolean
+  masteredWordsByLesson: Record<number, string[]>
 }
 
 // 2. Khởi tạo Store
@@ -49,28 +50,57 @@ export const useLessonStore = defineStore('lessonStore', {
     currentLessonId: null,
     favorites: [],
     lastPlayedId: null,
-    isLoading: false
+    isLoading: false,
+    masteredWordsByLesson: {}
   }),
 
   // Tự động lưu vào LocalStorage (Yêu cầu cài pinia-plugin-persistedstate)
- persist: {
+  persist: {
     key: 'my-english-pod-storage',
-    storage: 'localStorage',
-    paths: ['currentLessonId', 'favorites', 'lastPlayedId']
+    syncTab: true,
+    // storage: 'localStorage',
+    paths: ['currentLessonId', 'favorites', 'lastPlayedId', 'masteredWordsByLesson']
   },
 
   getters: {
     // Lấy thông tin chi tiết bài học đang chọn
     activeLesson: (state): Lesson | undefined => {
-      // Thêm kiểm tra Array.isArray để tránh lỗi "is not a function"
       if (!Array.isArray(state.lessons)) return undefined
       return state.lessons.find((l) => l.id === state.currentLessonId)
     },
+    activeLessonProgress: (state): number => {
+      const lessonId = state.currentLessonId
+      if (!lessonId || !state.lessons.length) return 0
+
+      const lesson = state.lessons.find((l) => l.id === lessonId)
+      const masteredInLesson = state.masteredWordsByLesson[lessonId] || []
+
+      if (!lesson || !lesson.vocabulary.length) return 0
+
+      return Math.round((masteredInLesson.length / lesson.vocabulary.length) * 100)
+    },
+    // MỚI: Tính tổng số từ vựng từ tất cả các bài học (hoặc bài hiện tại)
+    totalVocabularyCount: (state): number => {
+      return state.lessons.reduce((acc, lesson) => acc + lesson.vocabulary.length, 0)
+    },
+
+    // MỚI: Tính phần trăm tiến độ dựa trên số từ đã thuộc
+    progressPercentage: (state): number => {
+      const total = state.lessons.reduce((acc, lesson) => acc + (lesson.vocabulary?.length || 0), 0)
+
+      if (total === 0 || state.masteredWords.length === 0) return 0
+
+      const percent = Math.round((state.masteredWords.length / total) * 100)
+
+      return percent > 100 ? 100 : percent
+    },
 
     // Kiểm tra bài học có được đánh sao không
-    isFavorite: (state) => (id: number): boolean => {
-      return state.favorites.includes(id)
-    },
+    isFavorite:
+      (state) =>
+      (id: number): boolean => {
+        return state.favorites.includes(id)
+      },
 
     // Lọc danh sách bài học yêu thích
     favoriteLessons: (state): Lesson[] => {
@@ -79,11 +109,10 @@ export const useLessonStore = defineStore('lessonStore', {
   },
 
   actions: {
-    // Gọi dữ liệu từ file JSON
     async fetchLessons(): Promise<void> {
       this.isLoading = true
       try {
-        const data = await $fetch<Lesson[]>('/data/lessons.json');
+        const data = await $fetch<Lesson[]>('/data/lessons.json')
         console.log('data', data)
         console.log(Array.isArray(data))
         if (data && Array.isArray(data)) {
@@ -105,18 +134,30 @@ export const useLessonStore = defineStore('lessonStore', {
       }
     },
 
-  // Hàm để đổi tab từ bất cứ đâu
+    markAsMastered(word: string): void {
+      const lessonId = this.currentLessonId
+      if (!lessonId) return
+
+      // Khởi tạo mảng cho bài học nếu chưa có
+      if (!this.masteredWordsByLesson[lessonId]) {
+        this.masteredWordsByLesson[lessonId] = []
+      }
+
+      // Thêm từ vào đúng "ngăn" của bài học đó
+      if (!this.masteredWordsByLesson[lessonId].includes(word)) {
+        this.masteredWordsByLesson[lessonId].push(word)
+      }
+    },
+
     setActiveTab(tabName: string): void {
       this.activeTab = tabName
     },
 
-    // Chọn bài học mới
     setCurrentLesson(id: number): void {
       this.currentLessonId = id
       this.lastPlayedId = id
     },
 
-    // Bật/Tắt trạng thái yêu thích
     toggleFavorite(id: number): void {
       const index = this.favorites.indexOf(id)
       if (index > -1) {

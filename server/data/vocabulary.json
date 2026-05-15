@@ -1,0 +1,22 @@
+[
+    { "id": 1, "sentence": "Please review your ________ before we leave.", "hiddenWord": "itinerary", "hint": "Lịch trình chuyến đi.", "vi": "Vui lòng xem lại lịch trình của bạn trước khi chúng ta đi." },
+    { "id": 2, "sentence": "We have a short ________ in Singapore.", "hiddenWord": "layover", "hint": "Thời gian chờ giữa các chuyến bay.", "vi": "Chúng tôi có một khoảng thời gian chờ ngắn ở Singapore." },
+    { "id": 3, "sentence": "You must fill out the ________ declaration.", "hiddenWord": "customs", "hint": "Liên quan đến tờ khai hải quan.", "vi": "Bạn phải điền vào tờ khai hải quan." },
+    { "id": 4, "sentence": "Go to the ________ gate immediately.", "hiddenWord": "boarding", "hint": "Cổng để lên máy bay.", "vi": "Hãy đi đến cổng lên máy bay ngay lập tức." },
+    { "id": 5, "sentence": "My suitcase is too heavy; I fear the ________ fee.", "hiddenWord": "excess", "hint": "Phí khi hành lý quá cân.", "vi": "Vali của tôi quá nặng; tôi sợ phí quá cân." },
+    { "id": 6, "sentence": "Always buy travel ________ for safety.", "hiddenWord": "insurance", "hint": "Bảo hiểm cho chuyến đi.", "vi": "Luôn mua bảo hiểm du lịch để an toàn." },
+    { "id": 7, "sentence": "A ________ fare is cheaper than one-way.", "hiddenWord": "round-trip", "hint": "Vé bao gồm cả lượt đi và về.", "vi": "Vé khứ hồi thì rẻ hơn vé một chiều." },
+    { "id": 8, "sentence": "The ________ carousel is number five.", "hiddenWord": "baggage", "hint": "Nơi lấy hành lý.", "vi": "Băng chuyền hành lý là số năm." },
+    { "id": 9, "sentence": "Check the ________ hall for your taxi.", "hiddenWord": "arrival", "hint": "Sảnh nơi các chuyến bay đáp xuống.", "vi": "Kiểm tra sảnh đến để tìm taxi của bạn." },
+    { "id": 10, "sentence": "I need to make a hotel ________.", "hiddenWord": "reservation", "hint": "Đặt chỗ trước.", "vi": "Tôi cần đặt chỗ khách sạn." },
+    { "id": 11, "sentence": "What is the ________-out time?", "hiddenWord": "check", "hint": "Thủ tục trả phòng.", "vi": "Giờ trả phòng là lúc mấy giờ?" },
+    { "id": 12, "sentence": "This is an all-________ holiday package.", "hiddenWord": "inclusive", "hint": "Gói trọn gói.", "vi": "Đây là một gói kỳ nghỉ trọn gói." },
+    { "id": 13, "sentence": "It is very crowded during the ________ season.", "hiddenWord": "peak", "hint": "Mùa cao điểm.", "vi": "Rất đông đúc vào mùa cao điểm." },
+    { "id": 14, "sentence": "Show your ________ pass at the gate.", "hiddenWord": "boarding", "hint": "Thẻ lên máy bay.", "vi": "Xuất trình thẻ lên máy bay tại cổng." },
+    { "id": 15, "sentence": "I prefer a ________ seat to see the view.", "hiddenWord": "window", "hint": "Ghế ngồi cạnh cửa sổ.", "vi": "Tôi thích ghế ngồi cạnh cửa sổ để ngắm cảnh." },
+    { "id": 16, "sentence": "Can I pay with a ________ card?", "hiddenWord": "credit", "hint": "Thẻ tín dụng.", "vi": "Tôi có thể thanh toán bằng thẻ tín dụng không?" },
+    { "id": 17, "sentence": "We missed our ________ flight.", "hiddenWord": "connecting", "hint": "Chuyến bay nối chuyến.", "vi": "Chúng tôi đã lỡ chuyến bay nối chuyến." },
+    { "id": 18, "sentence": "Is breakfast ________ in the price?", "hiddenWord": "included", "hint": "Đã bao gồm vào giá.", "vi": "Bữa sáng có bao gồm trong giá không?" },
+    { "id": 19, "sentence": "The flight ________ caused many problems.", "hiddenWord": "cancellation", "hint": "Việc hủy chuyến bay.", "vi": "Việc hủy chuyến bay đã gây ra nhiều vấn đề." },
+    { "id": 20, "sentence": "I found my wallet at the ________ and found.", "hiddenWord": "lost", "hint": "Quầy tìm đồ thất lạc.", "vi": "Tôi đã tìm thấy ví tại quầy thất lạc đồ." }
+]

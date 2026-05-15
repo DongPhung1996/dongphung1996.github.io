@@ -53,9 +53,7 @@ export default defineNuxtConfig({
   nitro: {
     static: true
   },
-  experimental: {
-    payloadExtraction: false
-  },
+
   postcss: {
     plugins: {
       '@tailwindcss/postcss': {}

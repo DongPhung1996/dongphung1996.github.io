@@ -92,6 +92,7 @@
 </template>
 
 <script setup lang="ts">
+data
 const lessonStore = useLessonStore()
 // const activeTab = ref('Transcript')
 const setTab = (tab) => {
