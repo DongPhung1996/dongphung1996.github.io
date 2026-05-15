@@ -5,12 +5,12 @@ on:
     branches:
       - develop
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  
   
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'aws-key' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
